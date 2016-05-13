@@ -92,13 +92,21 @@ handles.leg=flipud(handles.leg);
 handles.motopath=imread('Motor Paths2.png');    %Read in the close up view for axis2
 handles.motopath=flipud(handles.motopath);
 
+handles.tcdlogo=imread('trinity-stacked.png');    
+%handles.tcdlogo=flipud(handles.tcdlogo);
+axes(handles.logo)
+image(handles.tcdlogo);
+set(gca,'XTick',[],'YTick',[]);
+box off
+set(gca,'XColor',[1 1 1],'YColor',[1 1 1],'TickDir','out')
+
 axes(handles.full_view);        %plot axis 1
 hold on;
 image(handles.leg);
-plot([110 457],[350 129],'-b','linewidth',2);
+plot([110 457],[350 129],'Color',[0.055 0.451 0.7255],'LineStyle','-','linewidth',2);
 plot([110 428],[380 171],'-r','linewidth',2);
 plot([322 410],[108 184],'-r','linewidth',2);
-plot([294 368],[123 185],'-b','linewidth',2);
+plot([294 368],[123 185],'Color',[0.055 0.451 0.7255],'LineStyle','-','linewidth',2);
 set(gca,'XTick',[],'YTick',[]);
 xlim([0 731]); ylim([0 723]);
 
@@ -133,26 +141,28 @@ set(gca,'XTick',[],'YTick',[]);
 xlim([0 690]); ylim([-20 640]);
 
 uistack(handles.full_view,'top');
+uistack(handles.logo,'top');
+
 
 axes(handles.time_axis)
 xlim([0 85]); ylim([-3 4.5]); 
 set(gca,'XTick',[0 20 40 60 80],'YTick',[-2 -1 0 1 2 3 4]);
 set(gca,'XTickLabel',[0 15 30 40 60]);
-xlabel('Time (ms)','FontSize',9,'FontUnits','normalized'); ylabel('Voltage (mV)','FontSize',9,'FontUnits','normalized');
-title('EMG Temporal Response','FontSize',11,'FontWeight','bold','FontUnits','normalized');
+xlabel('Time (ms)','FontName','Source Sans Pro','FontSize',9,'FontUnits','normalized'); ylabel('Voltage (mV)','FontName','Source Sans Pro','FontSize',9,'FontUnits','normalized');
+title('EMG Temporal Response','FontName','Source Sans Pro','FontSize',11,'FontWeight','bold','FontUnits','normalized','Color',[0.933 0.933 0.933]);
 axis on; hold on;
 
 handles.max_m_ani=animatedline('Color','r','Linewidth',2);
 handles.min_m_ani=animatedline('Color','r','Linewidth',2);
-handles.max_h_ani=animatedline('Color','b','Linewidth',2);
-handles.min_h_ani=animatedline('Color','b','Linewidth',2);
+handles.max_h_ani=animatedline('Color',[0.055 0.451 0.7255],'Linewidth',2);
+handles.min_h_ani=animatedline('Color',[0.055 0.451 0.7255],'Linewidth',2);
 
 axes(handles.ip_op)
 xlim([0 32]); ylim([0 8000]);
 set(gca,'XTick',[0 5 10 15 20 25 30],'YTick',[0 1000 2000 3000 4000 5000 6000 7000 8000]);
 set(gca,'YTickLabel',[0 1 2 3 4 5 6 7 8]);
-xlabel('Stimulus Intensity (mA)','FontSize',9,'FontUnits','normalized'); ylabel('EMG Response (mV)','FontSize',9,'FontUnits','normalized');
-title('H-Reflex and M-wave Recruitment Curves','FontSize',11,'FontWeight','bold','FontUnits','normalized');
+xlabel('Stimulus Intensity (mA)','FontName','Source Sans Pro','FontSize',9,'FontUnits','normalized'); ylabel('EMG Response (mV)','FontName','Source Sans Pro','FontSize',9,'FontUnits','normalized');
+title('H-Reflex and M-wave Recruitment Curves','FontName','Source Sans Pro','FontSize',11,'FontWeight','bold','FontUnits','normalized','Color',[0.933 0.933 0.933]);
 
 % Update handles structure
 guidata(hObject, handles);
@@ -195,8 +205,8 @@ threshold=0.3;
 
 handles.max_m_ani=animatedline('Color','r','Linewidth',2);
 handles.min_m_ani=animatedline('Color','r','Linewidth',2);
-handles.max_h_ani=animatedline('Color','b','Linewidth',2);
-handles.min_h_ani=animatedline('Color','b','Linewidth',2);
+handles.max_h_ani=animatedline('Color',[0.055 0.451 0.7255],'Linewidth',2);
+handles.min_h_ani=animatedline('Color',[0.055 0.451 0.7255],'Linewidth',2);
 
 [~,I] = min(abs(handles.current_stim_charge-handles.current));      %Find the nearest value in the EMG data to the value given on the electrical stimulus slider
 
@@ -271,20 +281,22 @@ clearpoints(handles.min_h_ani);
 end
 
 p=(max_h_I+min_h_I)/2;
-handles.h_arrow=plot([p p],[max_h min_h],'b','LineWidth',1);
+handles.h_arrow=plot([p p],[max_h min_h],'Color',[0.055 0.451 0.7255],'LineWidth',1);
 
 axes(handles.ip_op)
-stem(handles.current,handles.current_recruitment(I,2),'filled','Color','b','LineWidth',2);
+stem(handles.current,handles.current_recruitment(I,2),'filled','Color',[0.055 0.451 0.7255],'LineWidth',2);
 
 uistack(handles.max_m_ani,'top')
 uistack(handles.min_m_ani,'top')
 uistack(handles.max_h_ani,'top')
 uistack(handles.min_h_ani,'top')
 
+
 set(handles.elec_stim,'Enable','on');
 set(handles.tendon_tap,'Enable','on');
 
 guidata(hObject,handles);
+uistack(handles.logo,'top')
 
 
 
@@ -342,7 +354,7 @@ function select_view_Callback(hObject, eventdata, handles)
 if get(handles.select_view,'Value')==1
 
     uistack(handles.full_view,'top');
-    set(handles.elec_stim,'Position',handles.full_pos);
+    set(handles.elec_stim,'Position',[0.614 0.213 0.064 0.055]);
         set(handles.tendon_tap,'Visible','on');
 else
 
@@ -350,6 +362,9 @@ else
     set(handles.elec_stim,'Position',[0.61,0.425,0.0636,0.0549]);
     set(handles.tendon_tap,'Visible','off');
 end
+
+    uistack(handles.logo,'top');
+
     
 
 
@@ -414,7 +429,7 @@ if get(handles.State,'Value')==1
     handles.current_data=handles.rest_data;
 handles.current_stim_charge=handles.stim_charge;
 handles.current_recruitment=handles.rest_recruitment;
-    legend('M-wave: Contraction','H-reflex: Contraction');
+    legend('M-wave: Contraction','H-reflex: Contraction','FontName','Source Sans Pro');
 
 else
         handles.current_data=handles.contraction_data;
